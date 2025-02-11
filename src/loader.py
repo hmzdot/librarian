@@ -40,7 +40,7 @@ def load_markdown(vault_path: str) -> list[dict[str, str]]:
                     docs.append(
                         {
                             "path": f"{file_path}:{file_hash}",
-                            "content": f.read(),
+                            "content": f"# {file_path}\n\n" + f.read(),
                         }
                     )
     return docs

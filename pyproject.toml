@@ -5,6 +5,9 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "langchain>=0.3.18",
+    "faiss-cpu>=1.10.0",
+    "langchain[openai]>=0.3.18",
     "tiktoken>=0.8.0",
+    "openai>=1.61.1",
+    "tqdm>=4.67.1",
 ]

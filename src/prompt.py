@@ -5,17 +5,22 @@ from langchain_core.messages import SystemMessage, HumanMessage
 llm = init_chat_model(model="gpt-4o", model_provider="openai")
 
 
-def generate_response(query, vecdb: VecDB):
+def generate_response(query, vecdb: VecDB, verbose=False):
     retrieved_docs = vecdb.search(query)
-    context = "\n\n".join(
-        f"{doc['path']}: {doc['text']} (score: {doc['score']})"
-        for doc in retrieved_docs
-    )
-    print("=== Context ===")
-    print(context)
-    print("=== Query ===")
-    print(query)
-    print("=== Response ===")
+
+    # Group docs by path
+    docs_by_path = {}
+    for doc in retrieved_docs:
+        path = doc["path"]
+        if path not in docs_by_path:
+            docs_by_path[path] = f"# {path}\n\n"
+        docs_by_path[path] += doc["text"] + f"({doc['score']})" + "\n\n"
+
+    context = "\n\n".join(docs_by_path.values())
+
+    if verbose:
+        print("=== Context ===")
+        print(context)
 
     system_message = SystemMessage(
         content=f"""

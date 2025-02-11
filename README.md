@@ -2,6 +2,8 @@
 
 Turn Markdown folders to RAG-enabled assistants
 
+https://github.com/user-attachments/assets/9b37832e-9cf9-4934-9159-daa9f320e5e3
+
 ## Approaches
 
 - [X] Simple RAG

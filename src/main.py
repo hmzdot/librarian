@@ -1,8 +1,5 @@
 import argparse
-import os
-from loader import load_vault
-from vecdb import VecDB
-from prompt import generate_response
+from rag_chain import generate_response
 
 
 def parse_args():
@@ -14,10 +11,9 @@ def parse_args():
 
 def main():
     args = parse_args()
-    folder_name = os.path.basename(args.vault_path)
-    embeddings = load_vault(args.vault_path, cache_prefix=folder_name, progress=False)
-    vecdb = VecDB.from_embeddings(embeddings)
-    generate_response(args.search_query, vecdb)
+    response_stream = generate_response(args.search_query, args.vault_path)
+    for token in response_stream:
+        print(token.content, end="", flush=True)
 
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@ Turn Markdown folders to RAG-enabled assistants
 ## Approaches
 
 - [X] Simple RAG
+- [X] Fusion RAG (Generate similar queries before asking LLM)
 - [ ] Agentic RAG (Generate dummy answer before searching for better embeddings)
 
 ## How to Run

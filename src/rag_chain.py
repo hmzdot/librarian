@@ -9,6 +9,7 @@ from langchain.chat_models import init_chat_model
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.retrievers.document_compressors.chain_extract import LLMChainExtractor
 from langchain.retrievers import ContextualCompressionRetriever
+from rag_fusion import fusion
 
 embedding_model = OpenAIEmbeddings()
 llm = init_chat_model(model="gpt-4o", model_provider="openai")
@@ -71,12 +72,17 @@ def generate_response(query: str, vault_path: str) -> Iterator[str]:
     # A runnable is an abstraction over a function. hahaha
     # Upside is that you can chain them or run them in parallel.
     #
-    # RunnablePassthrough is identity function. You can pass extra data as
-    # runnable by using RunnablePassthrough().
+    # Runnables override bitwise OR operator for chaining.
+    #
+    # RunnablePassthrough is identity function. It is used to pass function
+    # arguments to the chain.
     #
     # StrOutputParser is lambda chunk: chunk.content, hahahaha
+    # Update the rag_chain definition
+
+    fusion_chain = fusion(llm, compression_retriever)
     rag_chain = (
-        {"context": compression_retriever, "input": RunnablePassthrough()}
+        {"context": fusion_chain, "input": RunnablePassthrough()}
         | prompt
         | llm
         | StrOutputParser()

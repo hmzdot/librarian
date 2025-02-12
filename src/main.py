@@ -13,7 +13,7 @@ def main():
     args = parse_args()
     response_stream = generate_response(args.search_query, args.vault_path)
     for token in response_stream:
-        print(token.content, end="", flush=True)
+        print(token, end="", flush=True)
 
 
 if __name__ == "__main__":

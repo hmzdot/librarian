@@ -9,7 +9,9 @@ from langchain.chat_models import init_chat_model
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.retrievers.document_compressors.chain_extract import LLMChainExtractor
 from langchain.retrievers import ContextualCompressionRetriever
-from rag_fusion import fusion
+
+# from rag_fusion import fusion
+from rag_agentic import agentic
 
 embedding_model = OpenAIEmbeddings()
 llm = init_chat_model(model="gpt-4o", model_provider="openai")
@@ -80,9 +82,10 @@ def generate_response(query: str, vault_path: str) -> Iterator[str]:
     # StrOutputParser is lambda chunk: chunk.content, hahahaha
     # Update the rag_chain definition
 
-    fusion_chain = fusion(llm, compression_retriever)
+    # fusion_chain = fusion(llm, compression_retriever)
+    agentic_chain = agentic(llm, compression_retriever)
     rag_chain = (
-        {"context": fusion_chain, "input": RunnablePassthrough()}
+        {"context": agentic_chain, "input": RunnablePassthrough()}
         | prompt
         | llm
         | StrOutputParser()
